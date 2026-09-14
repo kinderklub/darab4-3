@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Misi Darab: Pencerobohan Alien - Kinder Klub</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts - Quicksand -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  
+  <!-- Canvas Confetti for Victory Celebration -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Quicksand', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            orangeCustom: '#FF8A3D',
+            blueCustom: '#00D2FF',
+            pinkCustom: '#FF007F',
+            greenCustom: '#39FF14',
+            yellowCustom: '#FFEA00',
+            redCustom: '#FF3131',
+            purpleCustom: '#9D00FF',
+            spaceDark: '#0B0B1E',
+            panelDark: '#161638',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Duolingo 3D Button Effect with Cyber Neon Feel */
+    .btn-3d {
+      position: relative;
+      transition: all 0.15s ease;
+      transform: translateY(0);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-3d:active:not(:disabled) {
+      transform: translateY(3px);
+    }
+    .btn-3d:disabled {
+      cursor: not-allowed;
+      opacity: 0.85;
+    }
+    
+    /* Glowing Neon Shadows */
+    .neon-border-purple {
+      box-shadow: 0 0 15px rgba(157, 0, 255, 0.4);
+    }
+    .neon-border-green {
+      box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+    }
+    .neon-border-red {
+      box-shadow: 0 0 15px rgba(255, 49, 49, 0.4);
+    }
+    
+    /* Floating Space Dust and Asteroids */
+    @keyframes floatSpace {
+      0% { transform: translateY(0px) rotate(0deg) scale(1); }
+      50% { transform: translateY(-15px) rotate(3deg) scale(1.05); }
+      100% { transform: translateY(0px) rotate(0deg) scale(1); }
+    }
+    .floating-ufo {
+      animation: floatSpace 5s ease-in-out infinite;
+    }
+    .floating-meteor {
+      animation: floatSpace 8s ease-in-out infinite;
+      animation-delay: 1.5s;
+    }
+
+    /* Pulse effect for alert warnings */
+    @keyframes pulseRed {
+      0%, 100% { box-shadow: 0 0 15px rgba(255, 49, 49, 0.4); }
+      50% { box-shadow: 0 0 30px rgba(255, 49, 49, 0.8); }
+    }
+    .warning-glow {
+      animation: pulseRed 2s infinite;
+    }
+
+    /* Live score pop */
+    @keyframes scorePop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.25); }
+      100% { transform: scale(1); }
+    }
+    .score-pop {
+      animation: scorePop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Button flash animations for correct/incorrect */
+    @keyframes correctFlash {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+    .btn-correct-flash {
+      animation: correctFlash 0.3s ease-in-out;
+    }
+
+    @keyframes shakeWrong {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .btn-wrong-shake {
+      animation: shakeWrong 0.4s ease-in-out;
+    }
+
+    /* Custom Scrollbar for Sci-fi Grid */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0B0B1E;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #9D00FF;
+      border-radius: 10px;
+      border: 2px solid #0B0B1E;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #39FF14;
+    }
+  </style>
+</head>
+<body class="bg-spaceDark text-slate-100 min-h-screen font-sans flex flex-col justify-between overflow-x-hidden relative">
+
+  <!-- Space Background Nebula Grid -->
+  <div class="absolute inset-0 bg-[linear-gradient(to_right,#1f1f3e_1px,transparent_1px),linear-gradient(to_bottom,#1f1f3e_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none"></div>
+
+  <!-- Ambient Space Dust Elements -->
+  <div class="fixed top-20 left-10 text-3xl opacity-20 pointer-events-none floating-ufo select-none">🛸</div>
+  <div class="fixed top-40 right-20 text-4xl opacity-15 pointer-events-none floating-meteor select-none">☄️</div>
+  <div class="fixed bottom-24 left-1/4 text-2xl opacity-20 pointer-events-none floating-meteor select-none">🪐</div>
+  <div class="fixed bottom-40 right-12 text-3xl opacity-25 pointer-events-none floating-ufo select-none">👾</div>
+
+  <!-- Header / Nav bar -->
+  <header class="w-full max-w-4xl mx-auto px-4 pt-6 z-10">
+    <div class="bg-panelDark/80 backdrop-blur-md rounded-3xl p-4 shadow-lg border-2 border-purpleCustom/40 flex justify-between items-center neon-border-purple">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purpleCustom to-pinkCustom flex items-center justify-center text-white text-2xl font-bold shadow-md animate-pulse">
+          👽
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-black tracking-widest bg-gradient-to-r from-blueCustom via-pinkCustom to-greenCustom bg-clip-text text-transparent">MISI DARAB ALIEN</h1>
+          <p class="text-[10px] text-blueCustom font-bold tracking-widest uppercase">Sistem Pertahanan Bumi</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span id="header-avatar" class="text-2xl bg-slate-900/80 p-2 rounded-xl border border-blueCustom/30 hidden">👽</span>
+        <span id="header-player-name" class="font-bold text-xs sm:text-sm text-blueCustom tracking-wide hidden">Komander</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow w-full max-w-4xl mx-auto px-4 py-6 flex flex-col justify-center z-10">
+
+    <!-- PAGE 1: Welcome & Setup Name / Family Code -->
+    <section id="view-welcome" class="space-y-6">
+      <div class="bg-panelDark/95 rounded-3xl p-6 md:p-8 shadow-2xl border-4 border-b-8 border-purpleCustom text-center relative overflow-hidden">
+        
+        <!-- Laser Warning Bar -->
+        <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-greenCustom via-purpleCustom to-pinkCustom animate-pulse"></div>
+        
+        <div class="inline-block bg-redCustom/10 border-2 border-redCustom/60 text-redCustom font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest mb-4 warning-glow">
+          🚨 AMARAN: Pencerobohan Sedang Berlaku! 
+        </div>
+
+        <h2 class="text-2xl md:text-4xl font-black text-slate-100 mb-2 tracking-wide">
+          BINA PERTAHANAN <span class="text-greenCustom">MATEMATIK</span>
+        </h2>
+        <p class="text-slate-400 max-w-md mx-auto text-xs md:text-sm">Gunakan kuasa sifir darab untuk menembak jatuh UFO dan menyelamatkan galaksi!</p>
+
+        <!-- Form Fields (Cleared by default) -->
+        <div class="max-w-md mx-auto mt-6 space-y-5 text-left">
+          <!-- Choose Avatar -->
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-2 tracking-wide uppercase">Pilih Avatar Komander:</label>
+            <div class="grid grid-cols-6 gap-2">
+              <button onclick="selectAvatar('👽')" class="avatar-btn p-2 text-2xl rounded-2xl border-2 border-slate-700 bg-slate-900/50 hover:bg-purpleCustom/20 hover:border-purpleCustom transition-all transform active:scale-90 border-b-4">👽</button>
+              <button onclick="selectAvatar('👾')" class="avatar-btn p-2 text-2xl rounded-2xl border-2 border-slate-700 bg-slate-900/50 hover:bg-pinkCustom/20 hover:border-pinkCustom transition-all transform active:scale-90 border-b-4">👾</button>
+              <button onclick="selectAvatar('🛸')" class="avatar-btn p-2 text-2xl rounded-2xl border-2 border-slate-700 bg-slate-900/50 hover:bg-blueCustom/20 hover:border-blueCustom transition-all transform active:scale-90 border-b-4">🛸</button>
+              <button onclick="selectAvatar('🚀')" class="avatar-btn p-2 text-2xl rounded-2xl border-2 border-slate-700 bg-slate-900/50 hover:bg-orangeCustom/20 hover:border-orangeCustom transition-all transform active:scale-90 border-b-4">🚀</button>
+              <button onclick="selectAvatar('🧑‍🚀')" class="avatar-btn p-2 text-2xl rounded-2xl border-2 border-slate-700 bg-slate-900/50 hover:bg-greenCustom/20 hover:border-greenCustom transition-all transform active:scale-90 border-b-4">🧑‍🚀</button>
+              <button onclick="selectAvatar('🤖')" class="avatar-btn p-2 text-2xl rounded-2xl border-2 border-slate-700 bg-slate-900/50 hover:bg-yellowCustom/20 hover:border-yellowCustom transition-all transform active:scale-90 border-b-4">🤖</button>
+            </div>
+          </div>
+
+          <!-- Name Input (Default Kosong) -->
+          <div>
+            <label for="player-name" class="block text-xs font-bold text-slate-300 mb-1.5 tracking-wide uppercase">Nama Komander:</label>
+            <input type="text" id="player-name" class="w-full px-4 py-3 rounded-2xl bg-slate-950 border-2 border-slate-800 focus:border-greenCustom focus:ring-1 focus:ring-greenCustom focus:outline-none font-bold text-slate-100 placeholder-slate-600 transition-all text-sm" placeholder="Masukkan nama komander anda..." value="">
+          </div>
+
+          <!-- Family Code Input (Default Kosong) -->
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <label for="family-code" class="block text-xs font-bold text-slate-300 tracking-wide uppercase">Kod Armada Keluarga:</label>
+              <span class="text-[9px] text-blueCustom font-bold bg-blueCustom/10 px-2 py-0.5 rounded-full uppercase tracking-wider">Peranti Tempatan</span>
+            </div>
+            <input type="text" id="family-code" class="w-full px-4 py-3 rounded-2xl bg-slate-950 border-2 border-slate-800 focus:border-greenCustom focus:ring-1 focus:ring-greenCustom focus:outline-none font-bold text-slate-100 placeholder-slate-600 transition-all text-sm" placeholder="Contoh: ARMADA-ZASSS" value="">
+          </div>
+        </div>
+
+        <div class="mt-8">
+          <button onclick="goToConfigPage()" class="btn-3d w-full max-w-xs py-3.5 bg-gradient-to-r from-pinkCustom to-purpleCustom hover:from-pink-600 hover:to-purple-600 text-white font-extrabold text-base rounded-2xl border-b-4 border-purple-900 active:border-b-0 shadow-lg tracking-widest neon-border-purple">
+            MULA MISI 🛡️
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-panelDark/90 rounded-3xl p-5 sm:p-6 shadow-xl border-2 border-purpleCustom/30">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+          <div>
+            <h3 class="text-lg sm:text-xl font-bold text-slate-100 flex items-center gap-2 tracking-wide">
+              📊 Rekod Radar Armada Keluarga
+            </h3>
+            <p class="text-xs text-slate-400">Data markah disimpan secara setempat pada pelayar peranti ini</p>
+          </div>
+          <!-- Filter by Family Code -->
+          <div class="flex gap-2 w-full md:w-auto">
+            <input type="text" id="filter-family-code" class="px-3 py-2 text-xs rounded-xl bg-slate-950 border border-slate-800 text-slate-100 focus:border-blueCustom focus:outline-none font-semibold w-full md:w-40" placeholder="Tapis Kod Armada">
+            <button onclick="loadScores()" class="bg-blueCustom text-spaceDark font-bold text-xs px-4 py-2 rounded-xl hover:bg-cyan-400 transition-colors tracking-wider uppercase">
+              Tapis
+            </button>
+          </div>
+        </div>
+
+        <!-- Scores List -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead>
+              <tr class="bg-slate-950/60 text-slate-400 uppercase text-[10px] sm:text-xs font-bold border-b border-slate-800">
+                <th class="py-3 px-3 rounded-l-xl">Tarikh Log</th>
+                <th class="py-3 px-3">Komander</th>
+                <th class="py-3 px-3">Armada</th>
+                <th class="py-3 px-3">Tahap Ancaman</th>
+                <th class="py-3 px-3">Mod</th>
+                <th class="py-3 px-3 text-center rounded-r-xl">Markah</th>
+              </tr>
+            </thead>
+            <tbody id="scores-table-body" class="divide-y divide-slate-800">
+              <tr>
+                <td colspan="6" class="py-6 text-center text-slate-500 font-medium">Tiada isyarat radar dikesan. Bersedia untuk pelancaran pertama!</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 2: Game Config (Tanpa Pilihan Sifir) -->
+    <section id="view-config" class="hidden space-y-6">
+      <div class="bg-panelDark/95 rounded-3xl p-6 md:p-8 shadow-xl border-4 border-b-8 border-purpleCustom relative">
+        <!-- Back Button -->
+        <button onclick="goToWelcomePage()" class="absolute top-4 left-4 flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-pinkCustom bg-slate-950 hover:bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800 transition-all">
+          ← Pangkalan
+        </button>
+
+        <div class="text-center pt-6 pb-4">
+          <h2 class="text-2xl md:text-3xl font-black text-slate-100 tracking-wide">TETAPAN SENJATA PERTAHANAN 🔋</h2>
+          <p class="text-xs md:text-sm text-slate-400">Selaraskan sistem pertahanan laser sebelum menentang alien!</p>
+        </div>
+
+        <div class="space-y-6 max-w-xl mx-auto">
+          
+          <!-- Tahap Kesukaran (Threat level) -->
+          <div>
+            <span class="block text-xs font-bold text-slate-300 mb-2 tracking-wide uppercase">1. Pilih Tahap Ancaman Alien:</span>
+            <div class="grid grid-cols-3 gap-2.5">
+              <button onclick="selectDifficulty('mudah')" id="btn-diff-mudah" class="difficulty-btn p-3 rounded-2xl border-2 border-greenCustom bg-greenCustom/10 text-center font-bold transition-all transform flex flex-col items-center gap-1">
+                <span class="text-xl">🌱</span>
+                <span class="text-xs text-greenCustom">Spora Mudah</span>
+                <span class="text-[9px] text-slate-400 font-normal">Sifir asas (1-10)</span>
+              </button>
+              <button onclick="selectDifficulty('sederhana')" id="btn-diff-sederhana" class="difficulty-btn p-3 rounded-2xl border-2 border-slate-800 bg-slate-950 text-center font-bold transition-all transform flex flex-col items-center gap-1">
+                <span class="text-xl">👾</span>
+                <span class="text-xs text-yellowCustom">Penceroboh</span>
+                <span class="text-[9px] text-slate-400 font-normal">Sederhana (2-12)</span>
+              </button>
+              <button onclick="selectDifficulty('pro')" id="btn-diff-pro" class="difficulty-btn p-3 rounded-2xl border-2 border-slate-800 bg-slate-950 text-center font-bold transition-all transform flex flex-col items-center gap-1">
+                <span class="text-xl">👑</span>
+                <span class="text-xs text-redCustom">Raja Alien</span>
+                <span class="text-[9px] text-slate-400 font-normal">Nilai tinggi &amp; 2-digit</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Bilangan Soalan -->
+          <div>
+            <span class="block text-xs font-bold text-slate-300 mb-2 tracking-wide uppercase">2. Bilangan Sasaran (Soalan):</span>
+            <div class="grid grid-cols-6 gap-2">
+              <button onclick="selectQuestionCount(10)" id="btn-count-10" class="count-btn py-2.5 rounded-xl border-2 border-greenCustom bg-greenCustom/10 text-greenCustom text-center font-bold text-xs transition-all">10</button>
+              <button onclick="selectQuestionCount(20)" id="btn-count-20" class="count-btn py-2.5 rounded-xl border-2 border-slate-800 bg-slate-950 text-center font-bold text-xs text-slate-300 transition-all">20</button>
+              <button onclick="selectQuestionCount(30)" id="btn-count-30" class="count-btn py-2.5 rounded-xl border-2 border-slate-800 bg-slate-950 text-center font-bold text-xs text-slate-300 transition-all">30</button>
+              <button onclick="selectQuestionCount(40)" id="btn-count-40" class="count-btn py-2.5 rounded-xl border-2 border-slate-800 bg-slate-950 text-center font-bold text-xs text-slate-300 transition-all">40</button>
+              <button onclick="selectQuestionCount(50)" id="btn-count-50" class="count-btn py-2.5 rounded-xl border-2 border-slate-800 bg-slate-950 text-center font-bold text-xs text-slate-300 transition-all">50</button>
+              <button onclick="selectQuestionCount(60)" id="btn-count-60" class="count-btn py-2.5 rounded-xl border-2 border-slate-800 bg-slate-950 text-center font-bold text-xs text-slate-300 transition-all">60</button>
+            </div>
+          </div>
+
+          <!-- Mod Permainan -->
+          <div>
+            <span class="block text-xs font-bold text-slate-300 mb-2 tracking-wide uppercase">3. Mod Pertahanan Udara:</span>
+            <div class="grid grid-cols-2 gap-3">
+              <button onclick="selectMode('biasa')" id="btn-mode-biasa" class="mode-btn p-3.5 rounded-2xl border-2 border-greenCustom bg-greenCustom/10 text-left font-bold transition-all flex items-center gap-3">
+                <span class="text-xl bg-blueCustom/10 p-2 rounded-xl">🛡️</span>
+                <div>
+                  <div class="text-xs text-blueCustom font-bold">Mod Santai / Selamat</div>
+                  <div class="text-[9px] text-slate-400 font-normal">Selesaikan misi tanpa kekangan masa</div>
+                </div>
+              </button>
+              <button onclick="selectMode('cabaran')" id="btn-mode-cabaran" class="mode-btn p-3.5 rounded-2xl border-2 border-slate-800 bg-slate-950 text-left font-bold transition-all flex items-center gap-3">
+                <span class="text-xl bg-redCustom/10 p-2 rounded-xl">⚡</span>
+                <div>
+                  <div class="text-xs text-redCustom font-bold">Cabaran Terdesak (2 Min)</div>
+                  <div class="text-[9px] text-slate-400 font-normal">Tembak seberapa banyak UFO sebelum masa tamat</div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="mt-8 text-center">
+          <button onclick="startGame()" class="btn-3d w-full max-w-xs py-3.5 bg-gradient-to-r from-greenCustom to-emerald-500 hover:from-emerald-400 hover:to-green-400 text-spaceDark font-extrabold text-base rounded-2xl border-b-4 border-emerald-900 active:border-b-0 shadow-lg tracking-widest neon-border-green">
+            LANCAR SERANGAN 🚀
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 3: Interactive Question / Gameplay -->
+    <section id="view-game" class="hidden space-y-6">
+      
+      <!-- Top Scorebar & Progress -->
+      <div class="bg-panelDark/95 rounded-3xl p-4 shadow-md border-2 border-purpleCustom/40 flex flex-col gap-3">
+        
+        <!-- Live Action Bar -->
+        <div class="flex items-center justify-between">
+          
+          <!-- Back Button to Main Menu -->
+          <button onclick="openExitConfirmModal()" class="flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-redCustom bg-slate-950 hover:bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800 transition-all">
+            🚪 Undur Diri
+          </button>
+
+          <!-- Animated Live Score Indicators -->
+          <div class="flex gap-2">
+            <div id="live-score-correct" class="flex items-center gap-1.5 px-3 py-1 bg-greenCustom/10 border border-greenCustom/40 text-greenCustom font-bold text-xs rounded-full transition-all duration-200">
+              <span class="text-sm">🎯</span> <span id="live-correct-count">0</span> Musnah
+            </div>
+            <div id="live-score-wrong" class="flex items-center gap-1.5 px-3 py-1 bg-redCustom/10 border border-redCustom/40 text-redCustom font-bold text-xs rounded-full transition-all duration-200">
+              <span class="text-sm">💥</span> <span id="live-wrong-count">0</span> Terlepas
+            </div>
+          </div>
+
+          <!-- Timer for Challenge mode -->
+          <div id="timer-box" class="hidden items-center gap-1.5 px-3 py-1 bg-yellowCustom/10 border border-yellowCustom/40 text-yellowCustom font-bold text-xs rounded-full animate-pulse">
+            ⏱️ <span id="timer-display">02:00</span>
+          </div>
+
+        </div>
+
+        <!-- Progress Tracking Bar -->
+        <div>
+          <div class="flex justify-between items-center mb-1 text-xs font-bold text-slate-400">
+            <span>Kuasa Radar: <span id="progress-text" class="text-blueCustom">Sasaran 1 daripada 10</span></span>
+            <span id="progress-percent" class="text-slate-500">0%</span>
+          </div>
+          <!-- Bar Fill -->
+          <div class="w-full h-3 bg-slate-950 rounded-full overflow-hidden border border-slate-800 p-0.5">
+            <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-blueCustom via-purpleCustom to-pinkCustom rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Scrolling Answer Bubbles -->
+        <div id="bubbles-track" class="flex gap-2 overflow-x-auto pb-1 max-w-full justify-start items-center">
+          <!-- Dynamically populated with status dots -->
+        </div>
+
+      </div>
+
+      <!-- Main Question Container -->
+      <div class="bg-panelDark/95 rounded-3xl p-6 md:p-8 shadow-xl border-4 border-b-8 border-purpleCustom relative min-h-[360px] flex flex-col justify-between">
+        
+        <!-- Header badge & target counter -->
+        <div class="flex justify-between items-center mb-4">
+          <span id="question-type-badge" class="bg-blueCustom/10 border border-blueCustom/40 text-blueCustom text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">
+            Sistem Imbasan Laser
+          </span>
+          <span id="question-index-tag" class="text-[10px] tracking-widest font-bold text-slate-400 bg-slate-950 border border-slate-800 px-3 py-1 rounded-full">
+            SASARAN #1
+          </span>
+        </div>
+
+        <!-- Dynamic Question Area (Centered content) -->
+        <div id="question-area" class="my-auto py-4 text-center">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Immediate feedback alert text -->
+        <div id="answer-feedback-banner" class="hidden text-center py-2 px-4 rounded-xl text-xs font-bold mb-2"></div>
+
+        <!-- Multiple Choice Options (4 vibrant button grids) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+          <button onclick="submitAnswer(0)" id="option-0" class="btn-3d text-lg font-bold text-slate-100 py-3.5 px-6 rounded-2xl border-2 transition-all flex items-center justify-between">
+            <span class="bg-slate-900/60 w-8 h-8 rounded-full flex items-center justify-center text-xs text-slate-400 border border-slate-800 font-mono">A</span>
+            <span id="option-text-0" class="flex-grow text-center text-xl font-bold font-mono"></span>
+          </button>
+          <button onclick="submitAnswer(1)" id="option-1" class="btn-3d text-lg font-bold text-slate-100 py-3.5 px-6 rounded-2xl border-2 transition-all flex items-center justify-between">
+            <span class="bg-slate-900/60 w-8 h-8 rounded-full flex items-center justify-center text-xs text-slate-400 border border-slate-800 font-mono">B</span>
+            <span id="option-text-1" class="flex-grow text-center text-xl font-bold font-mono"></span>
+          </button>
+          <button onclick="submitAnswer(2)" id="option-2" class="btn-3d text-lg font-bold text-slate-100 py-3.5 px-6 rounded-2xl border-2 transition-all flex items-center justify-between">
+            <span class="bg-slate-900/60 w-8 h-8 rounded-full flex items-center justify-center text-xs text-slate-400 border border-slate-800 font-mono">C</span>
+            <span id="option-text-2" class="flex-grow text-center text-xl font-bold font-mono"></span>
+          </button>
+          <button onclick="submitAnswer(3)" id="option-3" class="btn-3d text-lg font-bold text-slate-100 py-3.5 px-6 rounded-2xl border-2 transition-all flex items-center justify-between">
+            <span class="bg-slate-900/60 w-8 h-8 rounded-full flex items-center justify-center text-xs text-slate-400 border border-slate-800 font-mono">D</span>
+            <span id="option-text-3" class="flex-grow text-center text-xl font-bold font-mono"></span>
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- PAGE 4: Scoreboard & Final Analysis -->
+    <section id="view-results" class="hidden space-y-6">
+      <div class="bg-panelDark/95 rounded-3xl p-6 md:p-8 shadow-xl border-4 border-b-8 border-purpleCustom text-center relative overflow-hidden">
+        
+        <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-greenCustom via-purpleCustom to-pinkCustom"></div>
+        
+        <div id="congrats-emoji" class="text-6xl mb-3 animate-bounce">👑</div>
+        <h2 class="text-2xl md:text-3xl font-black text-slate-100 tracking-wide">Misi Penggempuran Tamat!</h2>
+        <p class="text-xs sm:text-sm text-slate-400 font-semibold mb-6">Laporan radar pertahanan galaksi telah dikunci ke rekod</p>
+
+        <!-- Dynamic Summary Card -->
+        <div class="bg-slate-950 border-2 border-slate-800 p-5 rounded-2xl max-w-md mx-auto grid grid-cols-2 gap-4 mb-6">
+          <div class="text-center">
+            <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest">Komander</span>
+            <span id="result-name" class="text-base font-bold text-blueCustom">Komander</span>
+          </div>
+          <div class="text-center">
+            <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest">Kod Armada</span>
+            <span id="result-family" class="text-base font-bold text-pinkCustom">Armada 1</span>
+          </div>
+          <div class="text-center col-span-2 border-t border-slate-900 pt-3 flex justify-around">
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest">UFO Dimusnahkan</span>
+              <span id="result-score" class="text-2xl md:text-3xl font-black text-greenCustom">10 / 10</span>
+            </div>
+            <div>
+              <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest">Kadar Ketepatan</span>
+              <span id="result-percent" class="text-2xl md:text-3xl font-black text-yellowCustom">100%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3 justify-center mb-8">
+          <button onclick="goToWelcomePage()" class="btn-3d px-6 py-3 bg-slate-950 border border-slate-800 hover:bg-slate-900 text-slate-300 font-bold rounded-2xl border-b-4 border-slate-900 active:border-b-0 transition-all flex items-center justify-center gap-2 text-sm">
+            🏠 Pangkalan Utama
+          </button>
+          <button onclick="restartGame()" class="btn-3d px-6 py-3 bg-gradient-to-r from-pinkCustom to-purpleCustom hover:from-pink-600 hover:to-purple-600 text-white font-bold rounded-2xl border-b-4 border-purple-900 active:border-b-0 transition-all flex items-center justify-center gap-2 shadow-md text-sm">
+            🔄 Isi Semula Peluru
+          </button>
+        </div>
+
+        <!-- Question Analysis Section -->
+        <div class="text-left border-t border-slate-800 pt-6">
+          <h3 class="text-base font-bold text-slate-100 mb-4 flex items-center gap-2 tracking-wide">
+            🛰️ Laporan Tembakan Laser Setiap Sasaran
+          </h3>
+
+          <div id="analysis-container" class="space-y-3 max-h-80 overflow-y-auto pr-2">
+            <!-- Dynamically populated analysis items -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CONFIRMATION & EXIT MODAL -->
+  <div id="exit-modal" class="fixed inset-0 bg-spaceDark/85 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-panelDark rounded-3xl max-w-sm w-full p-6 text-center border-4 border-redCustom shadow-2xl relative">
+      <div class="text-4xl mb-3">🛸</div>
+      <h3 class="text-xl font-bold text-slate-100 mb-2">Hentikan Pertahanan?</h3>
+      <p class="text-xs text-slate-400 mb-6">Jika anda berundur sekarang, rekod sasaran semasa tidak akan disimpan dalam radar.</p>
+      <div class="grid grid-cols-2 gap-3">
+        <button onclick="closeExitConfirmModal()" class="py-2.5 bg-slate-950 hover:bg-slate-900 text-slate-300 font-bold rounded-xl text-xs transition-all border border-slate-800">
+          Gempur Lagi
+        </button>
+        <button onclick="confirmExitGame()" class="py-2.5 bg-redCustom hover:bg-red-600 text-white font-bold rounded-xl text-xs transition-all">
+          Ya, Undur
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="w-full text-center py-6 border-t border-purpleCustom/10 bg-slate-950/40 mt-12">
+    <div class="max-w-4xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-2">
+        <span class="text-lg">☄️</span>
+        <span class="font-bold text-xs text-slate-300">Penyelamat Sifir Galaksi Bumi</span>
+      </div>
+      <p class="text-xs font-bold text-slate-500">
+        Made with ❤️ by <span class="bg-gradient-to-r from-pinkCustom via-purpleCustom to-blueCustom bg-clip-text text-transparent font-extrabold text-sm">Kinder Klub</span>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Sound FX engine using Web Audio API (Clean laser tones & no external dependencies)
+    class SoundFX {
+      constructor() {
+        this.ctx = null;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            this.ctx = new AudioContext();
+          }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      playCorrect() {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(587, this.ctx.currentTime);
+          osc.frequency.setValueAtTime(880, this.ctx.currentTime + 0.08);
+          osc.frequency.setValueAtTime(1174, this.ctx.currentTime + 0.16);
+          
+          gain.gain.setValueAtTime(0.01, this.ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.18, this.ctx.currentTime + 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.35);
+          
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.36);
+        } catch (e) {
+          console.warn('Audio play error', e);
+        }
+      }
+      playIncorrect() {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(160, this.ctx.currentTime);
+          osc.frequency.linearRampToValueAtTime(80, this.ctx.currentTime + 0.3);
+          
+          gain.gain.setValueAtTime(0.01, this.ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.2, this.ctx.currentTime + 0.04);
+          gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + 0.35);
+          
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.36);
+        } catch (e) {
+          console.warn('Audio play error', e);
+        }
+      }
+      playClick() {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(1200, this.ctx.currentTime + 0.06);
+          
+          gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+          
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.09);
+        } catch (e) {
+          console.warn('Audio play error', e);
+        }
+      }
+    }
+
+    const sound = new SoundFX();
+
+    // Game state management
+    let state = {
+      playerName: '',
+      familyCode: '',
+      difficulty: 'mudah',
+      questionCount: 10,
+      mode: 'biasa',
+      avatar: '👽',
+      currentQuestionIndex: 0,
+      questions: [],
+      score: 0,
+      correctCount: 0,
+      wrongCount: 0,
+      timeLeft: 120,
+      timerInterval: null,
+      answeredHistory: [],
+      isAnswering: false // Anti-double-click guard
+    };
+
+    const optionButtonColors = [
+      { bg: 'bg-pinkCustom/10 text-pinkCustom border-pinkCustom/40 hover:bg-pinkCustom/25 active:border-b-0', border: 'border-pinkCustom' },
+      { bg: 'bg-blueCustom/10 text-blueCustom border-blueCustom/40 hover:bg-blueCustom/25 active:border-b-0', border: 'border-blueCustom' },
+      { bg: 'bg-yellowCustom/10 text-yellowCustom border-yellowCustom/40 hover:bg-yellowCustom/25 active:border-b-0', border: 'border-yellowCustom' },
+      { bg: 'bg-purpleCustom/10 text-purpleCustom border-purpleCustom/40 hover:bg-purpleCustom/25 active:border-b-0', border: 'border-purpleCustom' }
+    ];
+
+    const alienWordProblemTemplates = [
+      { text: "Sebuah kapal induk UFO menghantar {x} skuadron penceroboh. Setiap skuadron membawa {y} unit dron tempur. Berapakah jumlah dron tempur yang dihantar?", unit: "dron" },
+      { text: "Komander mengaktifkan {x} bateri meriam laser pertahanan. Setiap bateri melepaskan {y} das tembakan berkuasa tinggi. Berapa jumlah das tembakan dilepaskan?", unit: "das tembakan" },
+      { text: "Radar mengesan {x} armada alien sedang menghampiri Bumi. Setiap armada mengandungi {y} kapal angkasa pemusnah. Kira jumlah kapal pemusnah dikesan.", unit: "kapal" },
+      { text: "Stesen angkasa mengumpul {x} kontena kristal tenaga. Setiap kontena menghasilkan {y} megawatt kuasa. Berapakah megawatt kuasa terhasil?", unit: "megawatt" },
+      { text: "Sistem perisai Bumi memasang {x} tiang pelindung magnetik. Setiap tiang melindungi {y} zon bandar. Berapakah jumlah zon bandar yang selamat?", unit: "zon" }
+    ];
+
+    window.onload = function() {
+      selectAvatar('👽');
+      selectDifficulty('mudah');
+      selectQuestionCount(10);
+      selectMode('biasa');
+      loadScores();
+
+      const filterInput = document.getElementById('filter-family-code');
+      if (filterInput) {
+        filterInput.addEventListener('input', loadScores);
+      }
+    };
+
+    function showView(viewId) {
+      document.getElementById('view-welcome').classList.add('hidden');
+      document.getElementById('view-config').classList.add('hidden');
+      document.getElementById('view-game').classList.add('hidden');
+      document.getElementById('view-results').classList.add('hidden');
+      
+      const target = document.getElementById(viewId);
+      if (target) {
+        target.classList.remove('hidden');
+      }
+    }
+
+    function selectAvatar(emoji) {
+      sound.playClick();
+      state.avatar = emoji;
+      document.querySelectorAll('.avatar-btn').forEach(btn => {
+        if (btn.innerText.trim() === emoji) {
+          btn.className = 'avatar-btn p-2 text-2xl rounded-2xl border-2 border-greenCustom bg-greenCustom/10 text-white transition-all transform scale-110 border-b-0 font-bold';
+        } else {
+          btn.className = 'avatar-btn p-2 text-2xl rounded-2xl border-2 border-slate-800 bg-slate-900/50 hover:bg-slate-800/80 hover:border-slate-600 text-slate-400 transition-all transform border-b-4';
+        }
+      });
+    }
+
+    function goToConfigPage() {
+      sound.playClick();
+      const nameInput = document.getElementById('player-name').value.trim();
+      const familyCodeInput = document.getElementById('family-code').value.trim();
+
+      // Default fallback jika dibiarkan kosong
+      state.playerName = nameInput || 'Komander Rahsia';
+      state.familyCode = familyCodeInput || 'ARMADA UMUM';
+
+      document.getElementById('header-avatar').innerText = state.avatar;
+      document.getElementById('header-avatar').classList.remove('hidden');
+      document.getElementById('header-player-name').innerText = `Kmdr. ${state.playerName}`;
+      document.getElementById('header-player-name').classList.remove('hidden');
+
+      showView('view-config');
+    }
+
+    function goToWelcomePage() {
+      sound.playClick();
+      showView('view-welcome');
+    }
+
+    function selectDifficulty(diff) {
+      sound.playClick();
+      state.difficulty = diff;
+      document.querySelectorAll('.difficulty-btn').forEach(btn => {
+        btn.classList.remove('border-greenCustom', 'bg-greenCustom/10', 'scale-105');
+        btn.classList.add('border-slate-800', 'bg-slate-950');
+      });
+      const selectedBtn = document.getElementById(`btn-diff-${diff}`);
+      if (selectedBtn) {
+        selectedBtn.classList.remove('border-slate-800', 'bg-slate-950');
+        selectedBtn.classList.add('border-greenCustom', 'bg-greenCustom/10', 'scale-105');
+      }
+    }
+
+    function selectQuestionCount(count) {
+      sound.playClick();
+      state.questionCount = count;
+      document.querySelectorAll('.count-btn').forEach(btn => {
+        btn.className = 'count-btn py-2.5 rounded-xl border-2 border-slate-800 bg-slate-950 text-center font-bold text-xs text-slate-300 transition-all';
+      });
+      const selectedBtn = document.getElementById(`btn-count-${count}`);
+      if (selectedBtn) {
+        selectedBtn.className = 'count-btn py-2.5 rounded-xl border-2 border-greenCustom bg-greenCustom/10 text-greenCustom text-center font-bold text-xs transition-all scale-105';
+      }
+    }
+
+    function selectMode(mode) {
+      sound.playClick();
+      state.mode = mode;
+      document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.remove('border-greenCustom', 'bg-greenCustom/10', 'scale-105');
+        btn.classList.add('border-slate-800', 'bg-slate-950');
+      });
+      const selectedBtn = document.getElementById(`btn-mode-${mode}`);
+      if (selectedBtn) {
+        selectedBtn.classList.remove('border-slate-800', 'bg-slate-950');
+        selectedBtn.classList.add('border-greenCustom', 'bg-greenCustom/10', 'scale-105');
+      }
+    }
+
+    // Algoritma Fisher-Yates untuk kocokan rawak tanpa ulangan
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // Penjana bank soalan unik (0% duplicate) yang berbeza setiap kali dibuka
+    function generateQuestionList(difficulty, count) {
+      const candidates = [];
+      const questionTypes = {
+        mudah: ['ayat', 'lazim', 'bergambar'],
+        sederhana: ['ayat', 'lazim', 'bergambar', 'masalah'],
+        pro: ['ayat', 'lazim', 'masalah']
+      };
+
+      const allowedTypes = questionTypes[difficulty] || questionTypes.mudah;
+
+      if (difficulty === 'mudah') {
+        // Kolam sifir 1 hingga 10 (100 kombinasi unik)
+        for (let a = 1; a <= 10; a++) {
+          for (let b = 1; b <= 10; b++) {
+            candidates.push({ num1: a, num2: b });
+          }
+        }
+      } else if (difficulty === 'sederhana') {
+        // Kolam sifir 2 hingga 12 dan pendaraban 2-digit asas (lebih 200 kombinasi)
+        for (let a = 2; a <= 12; a++) {
+          for (let b = 2; b <= 12; b++) {
+            candidates.push({ num1: a, num2: b });
+          }
+        }
+        for (let a = 13; a <= 35; a++) {
+          for (let b = 2; b <= 6; b++) {
+            candidates.push({ num1: a, num2: b });
+          }
+        }
+        for (let a = 10; a <= 90; a += 10) {
+          for (let b = 2; b <= 9; b++) {
+            candidates.push({ num1: a, num2: b });
+          }
+        }
+      } else {
+        // Tahap Pro: Gabungan 2-digit & nombor besar (ratusan kombinasi)
+        for (let a = 11; a <= 99; a++) {
+          for (let b = 2; b <= 9; b++) {
+            candidates.push({ num1: a, num2: b });
+          }
+        }
+        for (let a = 11; a <= 25; a++) {
+          for (let b = 11; b <= 19; b++) {
+            candidates.push({ num1: a, num2: b });
+          }
+        }
+      }
+
+      // Kocok semua calon kombinasi secara rawak tulen
+      shuffleArray(candidates);
+
+      // Ambil mengikut bilangan soalan yang diperlukan tanpa ulangan
+      const selectedCombos = candidates.slice(0, Math.min(count, candidates.length));
+      const list = [];
+
+      selectedCombos.forEach((combo) => {
+        // Susun nombor besar di atas untuk kejelasan bentuk lazim & pendaraban
+        const topNum = Math.max(combo.num1, combo.num2);
+        const bottomNum = Math.min(combo.num1, combo.num2);
+        const correctAns = topNum * bottomNum;
+
+        // Pilih format paparan soalan secara seimbang
+        let type = allowedTypes[Math.floor(Math.random() * allowedTypes.length)];
+
+        // Jika soalan bergambar, pastikan bilangan UFO selesa & jelas dikira pada skrin
+        if (type === 'bergambar' && (bottomNum > 6 || (topNum * bottomNum) > 36)) {
+          type = Math.random() > 0.5 ? 'ayat' : 'lazim';
+        }
+
+        // Cipta 3 pilihan pengganggu (distractors) yang munasabah
+        const distractorSet = new Set();
+        distractorSet.add(correctAns + bottomNum);
+        if (correctAns - bottomNum > 0) distractorSet.add(correctAns - bottomNum);
+        distractorSet.add(correctAns + topNum);
+        if (correctAns - topNum > 0) distractorSet.add(correctAns - topNum);
+        distractorSet.add(correctAns + 10);
+        if (correctAns - 10 > 0) distractorSet.add(correctAns - 10);
+        distractorSet.add(topNum * (bottomNum + 1));
+        if (bottomNum > 1) distractorSet.add(topNum * (bottomNum - 1));
+
+        distractorSet.delete(correctAns);
+
+        const validDistractors = Array.from(distractorSet)
+          .filter(v => v > 0 && Number.isInteger(v) && v !== correctAns);
+
+        shuffleArray(validDistractors);
+        const finalDistractors = validDistractors.slice(0, 3);
+
+        let deltaOffset = 1;
+        while (finalDistractors.length < 3) {
+          const alt = correctAns + (deltaOffset % 2 === 0 ? deltaOffset : -deltaOffset);
+          if (alt > 0 && alt !== correctAns && !finalDistractors.includes(alt)) {
+            finalDistractors.push(alt);
+          }
+          deltaOffset++;
+        }
+
+        const options = [...finalDistractors, correctAns];
+        shuffleArray(options);
+
+        list.push({
+          num1: topNum,
+          num2: bottomNum,
+          type: type,
+          answer: correctAns,
+          options: options,
+          problemText: generateProblemText(topNum, bottomNum, type)
+        });
+      });
+
+      return list;
+    }
+
+    function generateProblemText(x, y, type) {
+      if (type !== 'masalah') return '';
+      const t = alienWordProblemTemplates[Math.floor(Math.random() * alienWordProblemTemplates.length)];
+      return t.text.replace('{x}', x).replace('{y}', y);
+    }
+
+    function startGame() {
+      sound.playClick();
+      state.currentQuestionIndex = 0;
+      state.score = 0;
+      state.correctCount = 0;
+      state.wrongCount = 0;
+      state.isAnswering = false;
+      state.answeredHistory = [];
+      state.questions = generateQuestionList(state.difficulty, state.questionCount);
+
+      document.getElementById('live-correct-count').innerText = '0';
+      document.getElementById('live-wrong-count').innerText = '0';
+
+      const timerBox = document.getElementById('timer-box');
+      if (state.mode === 'cabaran') {
+        state.timeLeft = 120;
+        timerBox.classList.remove('hidden');
+        timerBox.classList.add('flex');
+        startTimer();
+      } else {
+        timerBox.classList.add('hidden');
+        timerBox.classList.remove('flex');
+        clearInterval(state.timerInterval);
+      }
+
+      buildBubblesTrack();
+      showView('view-game');
+      renderQuestion();
+    }
+
+    function buildBubblesTrack() {
+      const track = document.getElementById('bubbles-track');
+      track.innerHTML = '';
+      
+      for (let i = 0; i < state.questionCount; i++) {
+        const bubble = document.createElement('div');
+        bubble.id = `track-bubble-${i}`;
+        bubble.className = 'w-6 h-6 rounded-full border-2 border-slate-700 bg-slate-900 flex items-center justify-center text-[10px] font-bold text-slate-500 flex-shrink-0 transition-all duration-300';
+        bubble.innerText = i + 1;
+        track.appendChild(bubble);
+      }
+    }
+
+    function updateProgressUI() {
+      const current = state.currentQuestionIndex;
+      const total = state.questionCount;
+      const percent = Math.round((current / total) * 100);
+
+      document.getElementById('progress-text').innerText = `Sasaran ${current + 1} daripada ${total}`;
+      document.getElementById('progress-percent').innerText = `${percent}%`;
+      document.getElementById('progress-bar-fill').style.width = `${percent}%`;
+
+      for (let i = 0; i < total; i++) {
+        const bubble = document.getElementById(`track-bubble-${i}`);
+        if (!bubble) continue;
+
+        if (i === current) {
+          bubble.className = 'w-7 h-7 rounded-full border-2 border-blueCustom bg-blueCustom/20 text-blueCustom flex items-center justify-center text-xs font-black flex-shrink-0 transition-all duration-300 animate-pulse';
+        } else if (i < current) {
+          const histItem = state.answeredHistory[i];
+          if (histItem && histItem.isCorrect) {
+            bubble.className = 'w-5 h-5 rounded-full bg-greenCustom border border-greenCustom text-slate-950 flex items-center justify-center text-[9px] font-black flex-shrink-0';
+            bubble.innerText = '✓';
+          } else {
+            bubble.className = 'w-5 h-5 rounded-full bg-redCustom border border-redCustom text-white flex items-center justify-center text-[9px] font-black flex-shrink-0';
+            bubble.innerText = '✗';
+          }
+        } else {
+          bubble.className = 'w-5 h-5 rounded-full border border-slate-800 bg-slate-950 flex items-center justify-center text-[9px] font-bold text-slate-500 flex-shrink-0';
+          bubble.innerText = i + 1;
+        }
+      }
+    }
+
+    function startTimer() {
+      clearInterval(state.timerInterval);
+      updateTimerDisplay();
+
+      state.timerInterval = setInterval(() => {
+        state.timeLeft--;
+        updateTimerDisplay();
+
+        if (state.timeLeft <= 0) {
+          clearInterval(state.timerInterval);
+          endGame();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const minutes = Math.floor(state.timeLeft / 60);
+      const seconds = state.timeLeft % 60;
+      const formatted = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      
+      const timerDisplay = document.getElementById('timer-display');
+      timerDisplay.innerText = formatted;
+
+      const parentBox = timerDisplay.parentElement;
+      if (state.timeLeft <= 15) {
+        parentBox.classList.remove('bg-yellowCustom/10', 'text-yellowCustom', 'border-yellowCustom/40');
+        parentBox.classList.add('bg-redCustom', 'text-white', 'border-redCustom');
+      } else {
+        parentBox.classList.remove('bg-redCustom', 'text-white', 'border-redCustom');
+        parentBox.classList.add('bg-yellowCustom/10', 'text-yellowCustom', 'border-yellowCustom/40');
+      }
+    }
+
+    function buildBentukLazimHTML(num1, num2) {
+      return `
+        <div class="flex flex-col items-center justify-center my-3">
+          <div class="bg-slate-950 border-2 border-purpleCustom/80 rounded-2xl px-8 py-5 shadow-inner inline-block">
+            <div class="font-mono text-3xl sm:text-4xl text-right tracking-wider text-slate-100 flex flex-col items-end">
+              <div class="w-full text-right">${num1}</div>
+              <div class="w-full flex justify-between items-center border-b-2 border-slate-600 pb-1.5 gap-4">
+                <span class="text-pinkCustom font-black text-2xl">×</span>
+                <span>${num2}</span>
+              </div>
+              <div class="w-full text-right text-greenCustom font-black pt-1 tracking-widest text-2xl">
+                ?
+              </div>
+            </div>
+          </div>
+          <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase tracking-widest">Kira Bentuk Lazim di atas</p>
+        </div>
+      `;
+    }
+
+    function buildVisualGridHTML(num1, num2) {
+      // Pastikan rajah bergambar sepadan dengan Kumpulan x Ahli
+      const groups = num2;
+      const itemsPerGroup = num1;
+
+      if (groups <= 8 && itemsPerGroup <= 8 && (groups * itemsPerGroup) <= 40) {
+        let groupsHTML = '';
+        const colors = [
+          'bg-pinkCustom/10 border-pinkCustom/40 text-pinkCustom',
+          'bg-blueCustom/10 border-blueCustom/40 text-blueCustom',
+          'bg-greenCustom/10 border-greenCustom/40 text-greenCustom',
+          'bg-yellowCustom/10 border-yellowCustom/40 text-yellowCustom',
+          'bg-purpleCustom/10 border-purpleCustom/40 text-purpleCustom'
+        ];
+        
+        for (let i = 0; i < groups; i++) {
+          const colorClass = colors[i % colors.length];
+          groupsHTML += `
+            <div class="border rounded-xl p-2 ${colorClass} flex flex-wrap gap-1 items-center justify-center min-w-[70px] max-w-[115px] shadow-sm">
+              <span class="block w-full text-[9px] text-slate-400 font-bold mb-0.5 border-b border-slate-800">Flit ${i + 1}</span>
+              <div class="flex flex-wrap justify-center gap-1">${'<span class="text-base sm:text-lg">🛸</span>'.repeat(itemsPerGroup)}</div>
+            </div>
+          `;
+        }
+        return `
+          <div class="text-center py-2">
+            <div class="text-xs sm:text-sm font-bold text-slate-300 mb-3">Kira jumlah armada UFO (${groups} kumpulan × ${itemsPerGroup} UFO):</div>
+            <div class="flex flex-wrap gap-2.5 justify-center items-center max-w-xl mx-auto">${groupsHTML}</div>
+          </div>
+        `;
+      } else {
+        return `
+          <div class="text-center py-3">
+            <div class="inline-block bg-slate-950 border-2 border-blueCustom/40 p-5 rounded-2xl max-w-md">
+              <div class="text-base font-bold text-blueCustom mb-1">Radar Formasi UFO</div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Terdapat <span class="font-bold text-pinkCustom text-sm">${num2} flit serangan</span> dan setiap flit mengandungi <span class="font-bold text-greenCustom text-sm">${num1} unit UFO</span>.
+              </p>
+              <div class="mt-3 text-xs font-mono font-bold text-slate-400 border-t border-slate-800 pt-2">
+                Persamaan Sifir: ${num1} × ${num2} = ?
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function renderQuestion() {
+      state.isAnswering = false;
+      const q = state.questions[state.currentQuestionIndex];
+      const qArea = document.getElementById('question-area');
+      const typeBadge = document.getElementById('question-type-badge');
+      const indexTag = document.getElementById('question-index-tag');
+      const feedbackBanner = document.getElementById('answer-feedback-banner');
+
+      feedbackBanner.classList.add('hidden');
+      indexTag.innerText = `SASARAN #${state.currentQuestionIndex + 1}`;
+      updateProgressUI();
+
+      switch (q.type) {
+        case 'ayat':
+          typeBadge.innerText = 'Imbasan Sifir Lazim';
+          typeBadge.className = 'bg-blueCustom/10 border border-blueCustom/40 text-blueCustom text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest';
+          qArea.innerHTML = `
+            <div class="text-center py-6">
+              <div class="text-4xl sm:text-5xl font-black text-slate-100 tracking-wider flex items-center justify-center gap-3 font-mono">
+                <span>${q.num1}</span>
+                <span class="text-pinkCustom text-3xl">×</span>
+                <span>${q.num2}</span>
+                <span class="text-blueCustom text-3xl">=</span>
+                <span class="text-greenCustom animate-pulse">?</span>
+              </div>
+              <p class="text-xs text-slate-400 font-semibold mt-4">Kira jawapan darab untuk sasaran laser di atas</p>
+            </div>
+          `;
+          break;
+        case 'lazim':
+          typeBadge.innerText = 'Pengiraan Bentuk Lazim';
+          typeBadge.className = 'bg-purpleCustom/10 border border-purpleCustom/40 text-purpleCustom text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest';
+          qArea.innerHTML = buildBentukLazimHTML(q.num1, q.num2);
+          break;
+        case 'bergambar':
+          typeBadge.innerText = 'Paparan Isyarat Radar';
+          typeBadge.className = 'bg-yellowCustom/10 border border-yellowCustom/40 text-yellowCustom text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest';
+          qArea.innerHTML = buildVisualGridHTML(q.num1, q.num2);
+          break;
+        case 'masalah':
+          typeBadge.innerText = 'Penyelesaian Masalah Taktikal';
+          typeBadge.className = 'bg-greenCustom/10 border border-greenCustom/40 text-greenCustom text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest';
+          qArea.innerHTML = `
+            <div class="text-center px-4 py-2">
+              <div class="bg-slate-950 border-2 border-slate-800 rounded-2xl p-5 text-slate-200 text-sm md:text-base font-semibold leading-relaxed shadow-sm max-w-xl mx-auto mb-3">
+                "${q.problemText}"
+              </div>
+              <div class="text-xs text-slate-400 font-semibold font-mono">Formula: ${q.num1} × ${q.num2} = ?</div>
+            </div>
+          `;
+          break;
+      }
+
+      for (let i = 0; i < 4; i++) {
+        const optionBtn = document.getElementById(`option-${i}`);
+        const optionTxt = document.getElementById(`option-text-${i}`);
+        
+        const optionVal = q.options[i];
+        optionTxt.innerText = optionVal;
+        
+        const style = optionButtonColors[i % optionButtonColors.length];
+        optionBtn.disabled = false;
+        optionBtn.className = `btn-3d w-full text-base sm:text-lg font-bold py-3.5 px-6 rounded-2xl border-2 border-b-4 ${style.bg} ${style.border} transition-all flex items-center justify-between shadow-sm`;
+      }
+    }
+
+    function submitAnswer(selectedIndex) {
+      if (state.isAnswering) return;
+      state.isAnswering = true;
+
+      const q = state.questions[state.currentQuestionIndex];
+      const selectedValue = q.options[selectedIndex];
+      const isCorrect = (selectedValue === q.answer);
+
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`option-${i}`);
+        btn.disabled = true;
+      }
+
+      const clickedBtn = document.getElementById(`option-${selectedIndex}`);
+      let correctButtonIndex = q.options.indexOf(q.answer);
+      const correctBtn = document.getElementById(`option-${correctButtonIndex}`);
+
+      const feedbackBanner = document.getElementById('answer-feedback-banner');
+      feedbackBanner.classList.remove('hidden');
+
+      if (isCorrect) {
+        state.score++;
+        state.correctCount++;
+        sound.playCorrect();
+
+        clickedBtn.className = 'btn-3d btn-correct-flash w-full text-base sm:text-lg font-bold py-3.5 px-6 rounded-2xl border-2 border-greenCustom bg-greenCustom text-slate-950 flex items-center justify-between shadow-lg';
+        
+        feedbackBanner.className = 'text-center py-2 px-4 rounded-xl text-xs font-bold mb-2 bg-greenCustom/20 text-greenCustom border border-greenCustom/40';
+        feedbackBanner.innerHTML = `🎯 TEMBAKAN TEPAT! ${q.num1} × ${q.num2} = ${q.answer}`;
+
+        const liveCorrect = document.getElementById('live-score-correct');
+        liveCorrect.classList.add('score-pop', 'bg-greenCustom', 'text-slate-950');
+        setTimeout(() => {
+          liveCorrect.classList.remove('score-pop', 'bg-greenCustom', 'text-slate-950');
+        }, 300);
+      } else {
+        state.wrongCount++;
+        sound.playIncorrect();
+
+        clickedBtn.className = 'btn-3d btn-wrong-shake w-full text-base sm:text-lg font-bold py-3.5 px-6 rounded-2xl border-2 border-redCustom bg-redCustom text-white flex items-center justify-between shadow-lg';
+        
+        if (correctBtn) {
+          correctBtn.className = 'btn-3d w-full text-base sm:text-lg font-bold py-3.5 px-6 rounded-2xl border-2 border-greenCustom bg-greenCustom/30 text-greenCustom flex items-center justify-between shadow-lg animate-pulse';
+        }
+
+        feedbackBanner.className = 'text-center py-2 px-4 rounded-xl text-xs font-bold mb-2 bg-redCustom/20 text-redCustom border border-redCustom/40';
+        feedbackBanner.innerHTML = `💥 SASARAN TERLEPAS! Jawapan sebenar: ${q.num1} × ${q.num2} = <strong class="underline">${q.answer}</strong>`;
+
+        const liveWrong = document.getElementById('live-score-wrong');
+        liveWrong.classList.add('score-pop', 'bg-redCustom', 'text-white');
+        setTimeout(() => {
+          liveWrong.classList.remove('score-pop', 'bg-redCustom', 'text-white');
+        }, 300);
+      }
+
+      state.answeredHistory.push({
+        num1: q.num1,
+        num2: q.num2,
+        type: q.type,
+        problemText: q.problemText,
+        answer: q.answer,
+        selected: selectedValue,
+        isCorrect: isCorrect
+      });
+
+      document.getElementById('live-correct-count').innerText = state.correctCount;
+      document.getElementById('live-wrong-count').innerText = state.wrongCount;
+
+      state.currentQuestionIndex++;
+      
+      setTimeout(() => {
+        if (state.currentQuestionIndex >= state.questionCount) {
+          endGame();
+        } else {
+          renderQuestion();
+        }
+      }, 850);
+    }
+
+    function openExitConfirmModal() {
+      sound.playClick();
+      document.getElementById('exit-modal').classList.remove('hidden');
+    }
+
+    function closeExitConfirmModal() {
+      sound.playClick();
+      document.getElementById('exit-modal').classList.add('hidden');
+    }
+
+    function confirmExitGame() {
+      clearInterval(state.timerInterval);
+      document.getElementById('exit-modal').classList.add('hidden');
+      goToWelcomePage();
+    }
+
+    function endGame() {
+      clearInterval(state.timerInterval);
+      
+      const percentage = Math.round((state.score / state.questionCount) * 100);
+      
+      document.getElementById('result-name').innerText = state.playerName;
+      document.getElementById('result-family').innerText = state.familyCode;
+      document.getElementById('result-score').innerText = `${state.score} / ${state.questionCount}`;
+      document.getElementById('result-percent').innerText = `${percentage}%`;
+
+      const emojiDiv = document.getElementById('congrats-emoji');
+      if (percentage >= 80) {
+        emojiDiv.innerText = '🛰️';
+        confetti({
+          particleCount: 150,
+          spread: 80,
+          origin: { y: 0.6 },
+          colors: ['#39FF14', '#00D2FF', '#FF007F']
+        });
+      } else if (percentage >= 50) {
+        emojiDiv.innerText = '🛡️';
+        confetti({
+          particleCount: 70,
+          spread: 60,
+          origin: { y: 0.6 },
+          colors: ['#FFEA00', '#9D00FF']
+        });
+      } else {
+        emojiDiv.innerText = '💥';
+      }
+
+      buildAnalysisCards();
+      saveScoreRecord();
+      showView('view-results');
+    }
+
+    function buildAnalysisCards() {
+      const container = document.getElementById('analysis-container');
+      container.innerHTML = '';
+
+      state.answeredHistory.forEach((item, index) => {
+        const card = document.createElement('div');
+        
+        let questionText = '';
+        if (item.type === 'masalah') {
+          questionText = item.problemText;
+        } else {
+          questionText = `Sasaran Sifir: ${item.num1} × ${item.num2}`;
+        }
+
+        const borderClass = item.isCorrect ? 'border-l-8 border-l-greenCustom border-slate-800' : 'border-l-8 border-l-redCustom border-slate-800';
+        const bgClass = item.isCorrect ? 'bg-greenCustom/5' : 'bg-redCustom/5';
+        const badgeClass = item.isCorrect ? 'bg-greenCustom/10 text-greenCustom' : 'bg-redCustom/10 text-redCustom';
+        const badgeText = item.isCorrect ? 'Berjaya Musnah' : 'Tersasar';
+
+        card.className = `border-2 ${borderClass} ${bgClass} rounded-2xl p-3.5 flex flex-col md:flex-row justify-between gap-2 items-start md:items-center shadow-sm`;
+        
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-[9px] font-bold text-slate-400 bg-slate-950 border border-slate-800 px-2 py-0.5 rounded-lg">SASARAN ${index + 1}</span>
+              <span class="text-[9px] font-black px-2 py-0.5 rounded-full ${badgeClass} uppercase tracking-widest">${badgeText}</span>
+            </div>
+            <p class="text-xs sm:text-sm font-bold text-slate-200">${questionText}</p>
+          </div>
+          
+          <div class="text-right flex md:flex-col items-center md:items-end justify-between w-full md:w-auto border-t md:border-t-0 border-slate-800 pt-2 md:pt-0 gap-2 font-mono">
+            <div>
+              <span class="text-[9px] text-slate-400 font-bold block uppercase tracking-wider">Pilihan Anda:</span>
+              <span class="font-extrabold text-sm ${item.isCorrect ? 'text-greenCustom' : 'text-redCustom'}">${item.selected}</span>
+            </div>
+            ${!item.isCorrect ? `
+              <div>
+                <span class="text-[9px] text-slate-400 font-bold block uppercase tracking-wider">Jawapan Sebenar:</span>
+                <span class="font-extrabold text-sm text-greenCustom">${item.answer}</span>
+              </div>
+            ` : ''}
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function saveScoreRecord() {
+      const records = JSON.parse(localStorage.getItem('kinderklub_math_scores') || '[]');
+      
+      const newRecord = {
+        id: Date.now(),
+        date: new Date().toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' }),
+        name: state.playerName,
+        familyCode: state.familyCode,
+        difficulty: state.difficulty.toUpperCase(),
+        mode: state.mode === 'cabaran' ? 'Cabaran' : 'Biasa',
+        score: state.score,
+        total: state.questionCount
+      };
+
+      records.unshift(newRecord);
+      localStorage.setItem('kinderklub_math_scores', JSON.stringify(records));
+      loadScores();
+    }
+
+    function loadScores() {
+      const records = JSON.parse(localStorage.getItem('kinderklub_math_scores') || '[]');
+      const tbody = document.getElementById('scores-table-body');
+      tbody.innerHTML = '';
+
+      const filterInput = document.getElementById('filter-family-code');
+      const filterVal = filterInput ? filterInput.value.trim().toLowerCase() : '';
+
+      const filtered = records.filter(item => {
+        if (!filterVal) return true;
+        return (item.familyCode || '').toLowerCase().includes(filterVal);
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="py-6 text-center text-slate-500 font-semibold text-xs">Tiada imbasan armada bertepatan.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      filtered.slice(0, 10).forEach(item => {
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-purpleCustom/10 text-slate-400 transition-colors border-b border-slate-900/50';
+        
+        row.innerHTML = `
+          <td class="py-2.5 px-3 font-semibold text-[11px] text-slate-500">${item.date}</td>
+          <td class="py-2.5 px-3 font-bold text-slate-200">${item.name}</td>
+          <td class="py-2.5 px-3"><span class="bg-blueCustom/10 text-blueCustom font-bold text-[10px] px-2 py-0.5 rounded-full border border-blueCustom/20">${item.familyCode || 'Umum'}</span></td>
+          <td class="py-2.5 px-3"><span class="text-[11px] font-bold text-slate-300">${item.difficulty}</span></td>
+          <td class="py-2.5 px-3"><span class="text-[11px] font-bold text-slate-300">${item.mode}</span></td>
+          <td class="py-2.5 px-3 text-center font-black text-xs text-greenCustom">${item.score} / ${item.total}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function restartGame() {
+      sound.playClick();
+      startGame();
+    }
+  </script>
+</body>
+</html>
